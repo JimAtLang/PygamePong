@@ -16,19 +16,22 @@ while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             quit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                paddle.rect.x -= 10
-            if event.key == pygame.K_RIGHT:
-                paddle.rect.x += 10
 
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_RIGHT]:
+        paddle.rect.x += 5
+    if keys[pygame.K_LEFT]:
+        paddle.rect.x -= 5
     screen.fill((0,0,0))
     ball.update()
     paddle.draw(screen)
     if ball.rect.left < 0 or ball.rect.right > screen.get_width():
         ball.vx = -ball.vx
     if ball.rect.top < 0 or ball.rect.bottom > screen.get_height():
-        ball.vy = - ball.vy
+        ball.vy = -ball.vy
+    if pygame.Rect.colliderect(ball.rect, paddle.rect):
+        ball.vy = -abs(ball.vy)
     screen.blit(ball.image, ball.rect)
     pygame.display.flip()
     clock.tick(60)
